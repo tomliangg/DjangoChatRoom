@@ -17,12 +17,17 @@
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
+    /* Receiving messages from the server
+    WebSockets is an event-driven API; when messages are received, 
+    a "message" event is delivered to the onmessage function. */
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
         document.querySelector('#chat-log').value += (message + '\n');
     };
 
+    /* Handling connection errors. If an error occurs while attempting to connect, 
+    first will invoke onerror handler, and then invoke onclose handler */
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
@@ -34,6 +39,7 @@
         }
     };
 
+    // Sending data to the server and using JSON to transmit objects
     document.querySelector('#chat-message-submit').onclick = function(e) {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
